@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+uploads/candidates/*
+!uploads/candidates/.htaccess
+.DS_Store
+Thumbs.db
