@@ -13,10 +13,10 @@ UPLOAD_PATH=/var/www/html/uploads/candidates
 
 ## Database
 
-Use the values from your Render MySQL/database service.
+Use the values from your MySQL-compatible database provider. Render managed databases are Postgres, so use an external MySQL-compatible database unless you rewrite the app for Postgres.
 
 ```text
-DB_HOST=<your Render private database host>
+DB_HOST=<your MySQL database host>
 DB_PORT=3306
 DB_NAME=campus_vote_pro
 DB_USER=<your database username>

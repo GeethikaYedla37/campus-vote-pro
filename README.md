@@ -13,6 +13,8 @@ The repository is prepared for a real project workflow. It does not contain demo
 - Deployment target: Docker hosting such as Render
 - Security: password hashing, prepared SQL queries, CSRF tokens, email verification for admin login, rate limiting, secure session cookies, upload validation, and database rules for one vote per category
 
+Deployment note: the app uses MySQL. If deploying the Docker web service on Render, use a separate MySQL-compatible database provider. Render managed databases are Postgres, which would require code and schema changes.
+
 ## Main Features
 
 - Public home page with election summary

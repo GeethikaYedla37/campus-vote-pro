@@ -1,6 +1,8 @@
 # Deploy CampusVote Pro On Render
 
-Render deploys the PHP website from GitHub using the `Dockerfile`. The database should be a separate MySQL service.
+Render deploys the PHP website from GitHub using the `Dockerfile`. This app uses MySQL, so the database must be a separate MySQL-compatible service.
+
+Important: Render's managed database product is Postgres. This project will not work with Render Postgres unless the PHP database layer and SQL schema are rewritten for Postgres. For this PHP/MySQL version, use a MySQL-compatible provider such as Aiven, PlanetScale, Railway MySQL, a managed MySQL host, or your own MySQL service with persistent storage.
 
 ## Production Architecture
 
@@ -8,7 +10,7 @@ Render deploys the PHP website from GitHub using the `Dockerfile`. The database 
 Browser
   -> Render HTTPS web service
   -> PHP + Apache Docker container
-  -> MySQL database
+  -> MySQL-compatible database
   -> Uploaded candidate images storage
 ```
 
@@ -32,9 +34,9 @@ Do not commit:
 - real admin passwords
 - uploaded identity documents or private files
 
-## Step 2: Create MySQL Database
+## Step 2: Create MySQL-Compatible Database
 
-Create a MySQL service/database and keep these values ready:
+Create a MySQL-compatible database outside the Render web service and keep these values ready:
 
 ```text
 DB_HOST=<private database host>
@@ -44,7 +46,7 @@ DB_USER=<database user>
 DB_PASS=<strong database password>
 ```
 
-Use persistent storage and regular backups for real elections.
+Use persistent storage and regular backups for real elections. Do not use a temporary database container without persistent storage for a real election.
 
 ## Step 3: Create Render Web Service
 
