@@ -237,6 +237,7 @@ Short version:
 - `database/production_schema.sql`: production database structure
 - `scripts/create_admin.php`: creates or updates the real admin account
 - `docs/RENDER_DEPLOY.md`: Render deployment guide
+- `docs/RENDER_ENV_VARS.md`: Render database, SMTP, and admin environment variable checklist
 - `docs/DOCKER_LOCAL.md`: local Docker guide
 - `Dockerfile`: PHP Apache Docker image
 - `docker-compose.yml`: local app, MySQL, and phpMyAdmin setup

@@ -55,6 +55,8 @@ Use persistent storage and regular backups for real elections.
 
 Set environment variables:
 
+Use `docs/RENDER_ENV_VARS.md` as the full checklist.
+
 ```text
 APP_ENV=production
 DB_HOST=<private database host>
