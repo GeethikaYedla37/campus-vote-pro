@@ -5,3 +5,6 @@ uploads/candidates/*
 !uploads/candidates/.htaccess
 .DS_Store
 Thumbs.db
+README_detail.md
+storage/sessions/*
+!storage/sessions/.gitkeep

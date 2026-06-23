@@ -21,6 +21,22 @@ function client_ip(): string
     return substr((string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 0, 45);
 }
 
+function is_local_request(): bool
+{
+    $remoteAddress = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+
+    return in_array($remoteAddress, ['127.0.0.1', '::1', '::ffff:127.0.0.1'], true);
+}
+
+function smtp_configured(): bool
+{
+    return MAIL_TRANSPORT === 'smtp'
+        && is_valid_email(MAIL_FROM_ADDRESS)
+        && SMTP_HOST !== ''
+        && SMTP_USERNAME !== ''
+        && SMTP_PASSWORD !== '';
+}
+
 function url(string $path = ''): string
 {
     return BASE_URL . '/' . ltrim($path, '/');
@@ -368,6 +384,9 @@ function status_label(string $status): string
         'open' => 'success',
         'scheduled' => 'warning',
         'pending', 'draft' => 'warning',
+        'new' => 'warning',
+        'reviewed' => 'neutral',
+        'resolved' => 'success',
         'deactivated', 'closed', 'inactive' => 'danger',
         default => 'neutral',
     };

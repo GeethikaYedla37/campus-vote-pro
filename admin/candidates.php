@@ -5,9 +5,6 @@ require_once __DIR__ . '/../includes/layout.php';
 
 require_admin();
 
-$defaultStart = (new DateTimeImmutable('now'))->format('Y-m-d\TH:i');
-$defaultEnd = (new DateTimeImmutable('+7 days'))->format('Y-m-d\TH:i');
-
 $categories = db()->query(
     'SELECT ec.*,
             COUNT(DISTINCT c.id) AS candidate_count,
@@ -47,25 +44,26 @@ render_header('Candidates', 'admin');
         </div>
         <label>
             <span>Category Name</span>
-            <input type="text" name="name" placeholder="Class Representative" maxlength="120" pattern="[A-Za-z0-9][A-Za-z0-9 &'().-]{2,119}" required>
+            <input type="text" name="name" maxlength="120" pattern="[A-Za-z0-9][A-Za-z0-9 &'().-]{2,119}" required>
         </label>
         <label>
             <span>Description</span>
-            <textarea name="description" rows="3" maxlength="500" placeholder="Short category purpose"></textarea>
+            <textarea name="description" rows="3" maxlength="500"></textarea>
         </label>
         <div class="form-grid compact-grid">
             <label>
                 <span>Starts At</span>
-                <input type="datetime-local" name="starts_at" value="<?= e($defaultStart) ?>" required>
+                <input type="datetime-local" name="starts_at" required>
             </label>
             <label>
                 <span>Ends At</span>
-                <input type="datetime-local" name="ends_at" value="<?= e($defaultEnd) ?>" required>
+                <input type="datetime-local" name="ends_at" required>
             </label>
         </div>
         <label>
             <span>Status</span>
-            <select name="status">
+            <select name="status" required>
+                <option value="">Select status</option>
                 <option value="active">Active</option>
                 <option value="draft">Draft</option>
                 <option value="closed">Closed</option>

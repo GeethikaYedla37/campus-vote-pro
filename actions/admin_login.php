@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 verify_csrf();
 
-$email = strtolower(trim((string) ($_POST['email'] ?? '')));
-$password = (string) ($_POST['password'] ?? '');
+$email = strtolower(trim((string) ($_POST['admin_email'] ?? $_POST['email'] ?? '')));
+$password = (string) ($_POST['admin_password'] ?? $_POST['password'] ?? '');
 
 if (!is_valid_email($email) || $password === '') {
     flash('danger', 'Enter a valid admin email and password.');

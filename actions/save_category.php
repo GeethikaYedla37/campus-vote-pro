@@ -15,7 +15,7 @@ $name = clean_text((string) ($_POST['name'] ?? ''), 120);
 $description = clean_text((string) ($_POST['description'] ?? ''), 500);
 $startsAt = trim((string) ($_POST['starts_at'] ?? ''));
 $endsAt = trim((string) ($_POST['ends_at'] ?? ''));
-$status = (string) ($_POST['status'] ?? 'active');
+$status = (string) ($_POST['status'] ?? '');
 
 if (!is_valid_category_name($name) || $startsAt === '' || $endsAt === '' || !in_array($status, ['draft', 'active', 'closed'], true)) {
     flash('danger', 'Fill category details correctly.');

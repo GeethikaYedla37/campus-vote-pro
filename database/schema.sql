@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS login_attempts;
 DROP TABLE IF EXISTS votes;
 DROP TABLE IF EXISTS candidates;
 DROP TABLE IF EXISTS election_categories;
+DROP TABLE IF EXISTS feedback_messages;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS admins;
 SET FOREIGN_KEY_CHECKS = 1;
@@ -59,6 +60,8 @@ CREATE TABLE candidates (
   photo_path VARCHAR(255) NULL,
   status ENUM('active','inactive') NOT NULL DEFAULT 'active',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_candidate_name_per_category (category_id, name),
+  UNIQUE KEY uq_candidate_roll_per_category (category_id, roll_number),
   CONSTRAINT fk_candidates_category
     FOREIGN KEY (category_id) REFERENCES election_categories(id)
     ON DELETE CASCADE
@@ -90,6 +93,21 @@ CREATE TABLE audit_logs (
   action VARCHAR(120) NOT NULL,
   details VARCHAR(700) NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE feedback_messages (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  student_id INT UNSIGNED NULL,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(150) NOT NULL,
+  subject VARCHAR(160) NOT NULL,
+  message TEXT NOT NULL,
+  status ENUM('new','reviewed','resolved') NOT NULL DEFAULT 'new',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_feedback_student
+    FOREIGN KEY (student_id) REFERENCES students(id)
+    ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE login_attempts (

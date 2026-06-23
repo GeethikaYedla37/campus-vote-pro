@@ -1,18 +1,16 @@
 # CampusVote Pro
 
-CampusVote Pro is a PHP and MySQL online college election website. It supports student registration, admin approval, election categories, candidate management, voting, live results, CSV export, and audit logs.
+CampusVote Pro is a local PHP and MySQL online college election website. It supports student registration, admin approval, election categories, candidate management, voting, live results, CSV export, and audit logs.
 
-This repository is prepared for a real project workflow. It does not include demo users, demo passwords, real `.env` secrets, Gmail app passwords, local database data, or uploaded candidate photos.
+This version is prepared for local Apache/XAMPP use. It does not include demo users, demo passwords, real `.env` secrets, Gmail app passwords, local database data, or uploaded candidate photos.
 
 ## Tech Stack
 
 - Frontend: HTML, CSS, Bootstrap Icons CDN
 - Backend: PHP with PDO
 - Database: MySQL
-- Local runtime: Docker or XAMPP
-- Deployment: Docker web service, such as Render, with a separate MySQL-compatible database
-
-Important: this project uses MySQL. Render managed databases are Postgres, so use an external MySQL-compatible database provider unless you rewrite the app for Postgres.
+- Local runtime: Apache with XAMPP
+- Database tool: phpMyAdmin
 
 ## Features
 
@@ -24,7 +22,11 @@ Important: this project uses MySQL. Render managed databases are Postgres, so us
 - Candidate enrollment with optional photo upload
 - One vote per student per category
 - Live results and CSV export
+- Public support/contact details
+- Student feedback form inside the logged-in dashboard
+- Admin feedback status updates with email notification to the student reply address
 - Audit logs and login attempt tracking
+- Visible security section on the home page
 
 ## Security Summary
 
@@ -35,7 +37,7 @@ Important: this project uses MySQL. Render managed databases are Postgres, so us
 - Repeated login failures are rate-limited.
 - Uploaded candidate files are validated.
 - Duplicate votes are blocked by a database rule.
-- Real secrets are kept in `.env` or hosting environment variables, not in GitHub.
+- Real secrets are kept in `.env`, not in GitHub.
 
 ## Database Tables
 
@@ -44,49 +46,37 @@ Important: this project uses MySQL. Render managed databases are Postgres, so us
 - `election_categories`
 - `candidates`
 - `votes`
+- `feedback_messages`
 - `audit_logs`
 - `login_attempts`
 
-## Run Locally With Docker
-
-1. Copy `.env.example` to `.env`.
-2. Add your local database and SMTP values in `.env`.
-3. Start the app:
-
-```powershell
-docker compose up -d --build
-```
-
-Open:
-
-```text
-Website: http://localhost:8081
-phpMyAdmin: http://localhost:8082
-```
-
-Full Docker guide: `docs/DOCKER_LOCAL.md`
-
 ## Run Locally With XAMPP
 
-1. Copy the project folder to `C:\xampp\htdocs\campus-vote-pro`.
-2. Start Apache and MySQL.
+1. Copy `.env.example` to `.env`.
+2. Start Apache and MySQL in XAMPP.
 3. Import `database/schema.sql` in phpMyAdmin.
-4. Configure database and SMTP values.
-5. Create the admin account with `scripts/create_admin.php`.
+4. Add SMTP email values in `.env`.
+5. Open `setup.php` and create the first admin.
+
+```text
+Website: http://localhost:8080/campus-vote-pro/
+Setup: http://localhost:8080/campus-vote-pro/setup.php
+phpMyAdmin: http://localhost:8080/phpmyadmin
+```
+
+Full guide: `docs/XAMPP_LOCAL.md`
+
+This laptop's XAMPP Apache port is configured as `8080`, and MySQL is configured as `3305`. If XAMPP ports change later, update the URL port and `DB_PORT` in `.env`.
 
 ## Admin Setup
 
-The repository does not include an admin password. Create the first admin from environment variables:
+The repository does not include an admin password. Create the first admin from `setup.php`.
 
-```powershell
-docker compose exec -e ADMIN_NAME="Election Administrator" -e ADMIN_EMAIL="admin@yourcollege.edu" -e ADMIN_PASSWORD="Use_A_Long_Strong_Private_Password" app php scripts/create_admin.php
-```
-
-The admin password is stored as a hash.
+The admin password is stored as a hash. After one admin exists, `setup.php` locks itself.
 
 ## Email Setup
 
-Admin verification emails need SMTP settings:
+Admin verification emails and feedback status emails need SMTP settings:
 
 ```text
 MAIL_TRANSPORT=smtp
@@ -99,37 +89,14 @@ SMTP_PASSWORD=<smtp password or app password>
 SMTP_ENCRYPTION=tls
 ```
 
-Test email delivery:
-
-```powershell
-docker compose exec app php scripts/test_mail.php
-```
-
-## Deployment
-
-Render deployment notes are in:
-
-- `docs/RENDER_DEPLOY.md`
-- `docs/RENDER_ENV_VARS.md`
-
-After deploying and adding environment variables, run:
-
-```bash
-php scripts/migrate.php
-php scripts/create_admin.php
-php scripts/test_mail.php
-```
+When admin marks feedback as `new`, `reviewed`, or `resolved`, the app sends an email to the reply address submitted by the student.
 
 ## Important Files
 
-- `Dockerfile`: PHP Apache Docker image
-- `docker-compose.yml`: local app, MySQL, and phpMyAdmin
 - `.env.example`: safe placeholder environment file
 - `database/schema.sql`: local database schema
-- `database/production_schema.sql`: production schema
-- `scripts/migrate.php`: creates or upgrades production tables
-- `scripts/create_admin.php`: creates or updates the real admin account
-- `scripts/test_mail.php`: tests SMTP delivery
+- `setup.php`: local first-admin setup page
+- `docs/XAMPP_LOCAL.md`: local XAMPP guide
 
 ## GitHub Safety
 

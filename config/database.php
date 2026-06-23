@@ -21,7 +21,7 @@ function db(): PDO
         ]);
     } catch (PDOException $exception) {
         http_response_code(500);
-        exit('Database connection failed. Import database/schema.sql and check config/config.php.');
+        exit('Database connection failed. Start Apache and MySQL, import database/schema.sql in phpMyAdmin, and check your .env database values.');
     }
 
     return $pdo;

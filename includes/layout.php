@@ -37,16 +37,19 @@ function render_header(string $title, string $area = 'public'): void
             <a href="<?= url('admin/candidates.php') ?>">Candidates</a>
             <a href="<?= url('admin/students.php') ?>">Students</a>
             <a href="<?= url('admin/results.php') ?>">Results</a>
+            <a href="<?= url('admin/support.php') ?>">Support</a>
             <a href="<?= url('admin/logs.php') ?>">Logs</a>
             <a class="nav-action" href="<?= url('actions/logout.php') ?>"><i class="bi bi-box-arrow-right"></i> Logout</a>
         <?php elseif ($area === 'student' && $student): ?>
             <a href="<?= url('student/dashboard.php') ?>">Dashboard</a>
             <a href="<?= url('student/candidates.php') ?>">Vote</a>
             <a href="<?= url('student/results.php') ?>">Results</a>
+            <a href="<?= url('student/dashboard.php#feedback') ?>">Feedback</a>
             <a href="<?= url('student/profile.php') ?>">Profile</a>
             <a class="nav-action" href="<?= url('actions/logout.php') ?>"><i class="bi bi-box-arrow-right"></i> Logout</a>
         <?php else: ?>
             <a href="<?= url('index.php') ?>">Home</a>
+            <a href="<?= url('index.php#support') ?>">Support</a>
             <a href="<?= url('admin/login.php') ?>">Admin</a>
             <a href="<?= url('student/login.php') ?>">Student</a>
             <a class="nav-action" href="<?= url('student/register.php') ?>"><i class="bi bi-person-plus"></i> Register</a>

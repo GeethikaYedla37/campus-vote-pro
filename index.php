@@ -114,6 +114,22 @@ render_header('Online College Election', 'public');
     </div>
 </section>
 
+<section class="split-section">
+    <div>
+        <p class="eyebrow">Security model</p>
+        <h2>Built with the important protections still active.</h2>
+        <p>The local XAMPP version keeps the same backend safeguards: secure password storage, protected forms, email-code admin verification, login rate limits, and database rules that block duplicate votes.</p>
+    </div>
+    <div class="process-list">
+        <div><i class="bi bi-key"></i><span>Admin and student passwords are hashed with PHP password hashing.</span></div>
+        <div><i class="bi bi-envelope-lock"></i><span>Admin login requires password plus emailed verification code.</span></div>
+        <div><i class="bi bi-database-lock"></i><span>Prepared PDO queries protect database actions from SQL injection.</span></div>
+        <div><i class="bi bi-shield-check"></i><span>CSRF tokens protect form submissions from fake requests.</span></div>
+        <div><i class="bi bi-stopwatch"></i><span>Repeated failed logins are rate-limited automatically.</span></div>
+        <div><i class="bi bi-check2-square"></i><span>The database enforces one vote per student per category.</span></div>
+    </div>
+</section>
+
 <section class="role-section">
     <div class="role-card admin-role">
         <p class="eyebrow">Admin</p>
@@ -126,6 +142,43 @@ render_header('Online College Election', 'public');
         <h2>Verified voter portal</h2>
         <p>Register once, wait for approval, login securely, view candidates, cast votes, and track results.</p>
         <a class="btn btn-primary" href="<?= url('student/login.php') ?>"><i class="bi bi-person-check"></i> Student Portal</a>
+    </div>
+</section>
+
+<section class="split-section" id="support">
+    <div>
+        <p class="eyebrow">Support and contact</p>
+        <h2>Need help with the election process?</h2>
+        <p>Use these local support details for general help. Student feedback is available after student login so every message is connected to a verified voter account.</p>
+        <div class="process-list">
+            <div><i class="bi bi-building"></i><span>Election office: College administration block.</span></div>
+            <div><i class="bi bi-clock"></i><span>Support hours: Working days during college hours.</span></div>
+            <div><i class="bi bi-person-check"></i><span>For feedback, login as student and use the Feedback section.</span></div>
+        </div>
+    </div>
+    <div class="panel form-stack">
+        <div class="panel-header">
+            <h2>Contact details</h2>
+            <span class="badge badge-neutral">Support</span>
+        </div>
+        <div class="stack-list">
+            <div class="stack-item">
+                <strong>Admin portal</strong>
+                <span>For election officers managing students, candidates, and results.</span>
+            </div>
+            <div class="stack-item">
+                <strong>Student portal</strong>
+                <span>For registration, voting, results, and feedback after login.</span>
+            </div>
+            <div class="stack-item">
+                <strong>Feedback tracking</strong>
+                <span>Admin status updates are emailed to the reply email entered by the student.</span>
+            </div>
+        </div>
+        <a class="btn btn-primary" href="<?= url('student/login.php') ?>">
+            <i class="bi bi-person-check"></i>
+            Student login for feedback
+        </a>
     </div>
 </section>
 

@@ -32,6 +32,15 @@ foreach ($categoryRows as $category) {
     }
 }
 
+$feedbackStatement = db()->prepare(
+    'SELECT * FROM feedback_messages
+     WHERE student_id = ?
+     ORDER BY created_at DESC
+     LIMIT 5'
+);
+$feedbackStatement->execute([(int) $student['id']]);
+$feedbackRows = $feedbackStatement->fetchAll();
+
 render_header('Student Dashboard', 'student');
 ?>
 
@@ -75,6 +84,82 @@ render_header('Student Dashboard', 'student');
                 <?php endif; ?>
             </article>
         <?php endforeach; ?>
+    </div>
+</section>
+
+<section class="split-section" id="feedback">
+    <div>
+        <p class="eyebrow">Feedback</p>
+        <h2>Send feedback to the election team.</h2>
+        <p>Use this section after login for voting access issues, candidate questions, or election feedback. Admin can review it and send you an email when the status changes.</p>
+        <div class="process-list">
+            <div><i class="bi bi-envelope-check"></i><span>Your feedback is stored in the local database for admin review.</span></div>
+            <div><i class="bi bi-person-check"></i><span>Your student name is attached automatically.</span></div>
+            <div><i class="bi bi-bell"></i><span>You receive email when admin marks it reviewed or resolved.</span></div>
+        </div>
+    </div>
+    <form class="panel form-stack" action="<?= url('actions/save_feedback.php') ?>" method="post">
+        <?= csrf_field() ?>
+        <div class="panel-header">
+            <h2>Submit feedback</h2>
+            <span class="badge badge-neutral">Student</span>
+        </div>
+        <label>
+            <span>Reply email</span>
+            <input type="email" name="email" maxlength="150" required>
+            <small class="field-help">Admin response status will be emailed to this address.</small>
+        </label>
+        <label>
+            <span>Subject</span>
+            <input type="text" name="subject" minlength="4" maxlength="160" required>
+        </label>
+        <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" minlength="10" maxlength="2000" required></textarea>
+        </label>
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-send"></i>
+            Submit feedback
+        </button>
+    </form>
+</section>
+
+<section class="section-wrap tight-top">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Your Feedback</h2>
+            <span><?= count($feedbackRows) ?> recent</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Reply Email</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($feedbackRows as $feedback): ?>
+                    <tr>
+                        <td>
+                            <strong><?= e($feedback['subject']) ?></strong>
+                            <small class="table-note"><?= e($feedback['message']) ?></small>
+                        </td>
+                        <td><?= e($feedback['email']) ?></td>
+                        <td><span class="badge badge-<?= status_label($feedback['status']) ?>"><?= e($feedback['status']) ?></span></td>
+                        <td><?= format_datetime($feedback['created_at']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if (!$feedbackRows): ?>
+                    <tr>
+                        <td colspan="4">No feedback submitted yet.</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 

@@ -36,6 +36,25 @@ if (!$categoryCheck->fetch()) {
     redirect('admin/candidates.php');
 }
 
+$duplicateSql = 'SELECT id FROM candidates WHERE category_id = ? AND LOWER(TRIM(name)) = LOWER(TRIM(?)) LIMIT 1';
+$duplicateValues = [$categoryId, $name];
+
+if ($rollNumber !== '') {
+    $duplicateSql = 'SELECT id FROM candidates
+                     WHERE category_id = ?
+                       AND (LOWER(TRIM(name)) = LOWER(TRIM(?)) OR LOWER(TRIM(roll_number)) = LOWER(TRIM(?)))
+                     LIMIT 1';
+    $duplicateValues[] = $rollNumber;
+}
+
+$duplicateCheck = db()->prepare($duplicateSql);
+$duplicateCheck->execute($duplicateValues);
+
+if ($duplicateCheck->fetch()) {
+    flash('danger', 'Candidate already exists in this category. Check the name or roll number.');
+    redirect('admin/candidates.php');
+}
+
 if (!empty($_FILES['photo']['name'])) {
     if ($_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
         flash('danger', 'Candidate photo upload failed.');
@@ -95,7 +114,11 @@ try {
     log_activity('admin', (int) $admin['id'], 'candidate_created', $name);
     flash('success', 'Candidate enrolled successfully.');
 } catch (PDOException $exception) {
-    flash('danger', 'Candidate could not be saved.');
+    if ($exception->getCode() === '23000') {
+        flash('danger', 'Candidate already exists in this category. Check the name or roll number.');
+    } else {
+        flash('danger', 'Candidate could not be saved.');
+    }
 }
 
 redirect('admin/candidates.php');

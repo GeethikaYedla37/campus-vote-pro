@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 verify_csrf();
 
-$rollNumber = strtoupper(trim((string) ($_POST['roll_number'] ?? '')));
-$password = (string) ($_POST['password'] ?? '');
+$rollNumber = strtoupper(trim((string) ($_POST['student_roll_number'] ?? $_POST['roll_number'] ?? '')));
+$password = (string) ($_POST['student_password'] ?? $_POST['password'] ?? '');
 
 if (!is_valid_roll_number($rollNumber) || $password === '') {
     flash('danger', 'Enter a valid roll number and password.');
